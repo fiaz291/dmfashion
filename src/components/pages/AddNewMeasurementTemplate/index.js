@@ -85,7 +85,7 @@ export default function AddNewMeasurementTemplate({}) {
             }
           }}
         >
-          {({ setFieldValue }) => (
+          {({ setFieldValue, resetForm, values }) => (
             <Form>
               <div>
                 <div
@@ -114,7 +114,7 @@ export default function AddNewMeasurementTemplate({}) {
                         const res = await fetchMeasurementsWithPhoneNumber(
                           e.target.value
                         );
-                        const phoneNumber = await fetchUserWithPhoneNumber(
+                        const clientName = await fetchUserWithPhoneNumber(
                           e.target.value
                         );
                         if (res) {
@@ -124,10 +124,17 @@ export default function AddNewMeasurementTemplate({}) {
                             }
                           });
                           setMeasurementId(res.id);
-                        } else if (phoneNumber) {
-                          setFieldValue("clientName", phoneNumber);
+                          setNoUserFound(false);
+                        } else if (clientName) {
+                          setFieldValue("clientName", clientName);
+                          setNoUserFound(false);
+                          setMeasurementId(false);
                         } else {
                           setNoUserFound(true);
+                          const phoneNumber = values.phoneNumber;
+                          resetForm();
+                          setMeasurementId(false);
+                          setFieldValue("phoneNumber", phoneNumber);
                         }
                       }}
                     />

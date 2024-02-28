@@ -1,20 +1,22 @@
+import { getDataById } from "@/models";
 import { useFormik } from "formik";
 import moment from "moment";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const singleOrder = {
   phoneNumber: "",
   clientName: "",
   id: "",
   orderGroupId: "",
-  bookingDate: null,
+  bookingDate: moment().format(),
   deliveryDate: null,
-  shop: "DMFashion",
-  status: "received",
+  shop: "dm",
+  status: "Received",
   ammount: 0,
   isPaid: false,
-  isDelivered: "",
+  isDelivered: false,
 };
+
 export default function useAddOrder({ handleOrdersUpload, measurements }) {
   const initialValues = {
     orders: [singleOrder],
@@ -30,9 +32,10 @@ export default function useAddOrder({ handleOrdersUpload, measurements }) {
   } = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      const data = { ...values, measurement: measurements };
-      // set order ids in handleOrdersUpload function
-      await handleOrdersUpload(data);
+      const data = values;
+      // set order ids and measurements in handleOrdersUpload function
+      // measurements are in array now and need to add accordingly in every order
+      await handleOrdersUpload(data, measurements);
     },
   });
 
@@ -51,7 +54,6 @@ export default function useAddOrder({ handleOrdersUpload, measurements }) {
           } else return null;
         })
         .filter((i) => i !== null);
-      console.log({ newOrders });
       setFieldValue("orders", newOrders);
     },
     [values.orders, setFieldValue]
@@ -60,14 +62,14 @@ export default function useAddOrder({ handleOrdersUpload, measurements }) {
   const handleSetData = useCallback(
     (field, data, orderNumber) => {
       const previouseOrders = [...values.orders];
-      const newOrders = previouseOrders.map((i, index) => {
+      const newOrders = previouseOrders.map((obj, index) => {
         if (index === orderNumber) {
-            console.log()
-          i[field] = data;
-          return i;
-        } else return i;
+          const newObj = { ...obj, [field]: data };
+          return newObj;
+        } else {
+          return obj;
+        }
       });
-      console.log({ newOrders });
       setFieldValue("orders", newOrders);
     },
     [setFieldValue, values.orders]

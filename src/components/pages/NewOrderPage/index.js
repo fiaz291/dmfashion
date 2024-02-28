@@ -3,28 +3,38 @@ import styles from "./styles";
 import { useFormik } from "formik";
 import {
   fetchMeasurementsWithPhoneNumber,
-  getDataById,
-  writeData,
+  fetchUserWithPhoneNumber,
 } from "@/models";
 import { toast } from "react-toastify";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import EditMeasurementTemplate from "../EditMeasurementTemplate";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import useAddOrder from "@/components/hooks/addOrders";
 
+const BRANCHES = [
+  { name: "DM Fashion", key: "dm" },
+  { name: "The Tailors", key: "tt" },
+];
+
+const STATUS = ["Received", "Cutting", "Stich", "Press", "Ready"];
+
 export default function NewOrderPage({ handleOrdersUpload }) {
-  const [currentOrderNumber, setCurrentOrderNumber] = useState(null);
-  const [measurements, setMeasurements] = useState(null);
+  const [measurements, setMeasurements] = useState([]);
+  const [selectedMeasurement, setSelectedMeasurement] = useState(null);
   const {
     handleSubmit,
     values,
     handleSetData,
-    handleChange,
-    handleBlur,
-    touched,
-    errors,
     handleAddOrders,
     handleRemoveOrders,
   } = useAddOrder({
@@ -32,34 +42,23 @@ export default function NewOrderPage({ handleOrdersUpload }) {
     measurements,
   });
 
-  useEffect(() => {
-    async function getMeasurements(phone) {
+  const regex = /^\d{11}$/;
+  const handleGetMeasurements = async (phone) => {
+    if (regex.test(phone)) {
       const res = await fetchMeasurementsWithPhoneNumber(phone);
       if (res) {
-        setMeasurements(res);
+        setMeasurements([...measurements, res]);
       }
     }
-    const regex = /^\d{11}$/;
+  };
 
-    if (regex.test(values.phoneNumber)) {
-      getMeasurements(values.phoneNumber);
-    }
-  }, [values.phoneNumber]);
+  const handleRemoveMeasurement = (index) => {
+    const preMeasurements = [...measurements];
+    preMeasurements.splice(index, 1);
+    setMeasurements(preMeasurements);
+  };
 
-  useEffect(() => {
-    async function getIds() {
-      const dmFashionId = await getDataById("OrderCounts", "dmFashion");
-      const tailorsId = await getDataById("OrderCounts", "tailors");
-      setCurrentOrderNumber({
-        dm: dmFashionId?.currentOrder,
-        tt: tailorsId?.currentOrder,
-      });
-    }
-    if (!currentOrderNumber) {
-      getIds();
-    }
-  }, [currentOrderNumber]);
-
+  const today = new Date();
   return (
     <main>
       <div className="main">Place New Order</div>
@@ -68,50 +67,96 @@ export default function NewOrderPage({ handleOrdersUpload }) {
           <form onSubmit={handleSubmit}>
             {values.orders.map((order, index) => (
               <Stack key={index}>
-                <Stack direction="row" spacing={2}>
+                <Stack
+                  direction="row"
+                  sx={{ margin: "10px 0" }}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={2}
+                >
                   <Box>
                     <label>Phone Number</label>
                     <TextField
                       fullWidth
                       id="phoneNumber"
                       name="phoneNumber"
-                      value={values.phoneNumber}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.phoneNumber && Boolean(errors.phoneNumber)}
-                      helperText={touched.phoneNumber && errors.phoneNumber}
+                      onChange={async (e) => {
+                        // e.preventDefault();
+                        handleSetData("phoneNumber", e.target.value, index);
+                        if (regex.test(e.target.value)) {
+                          await handleGetMeasurements(e.target.value);
+                        }
+                      }}
+                      value={order.phoneNumber}
                       hiddenLabel
                     />
+                  </Box>
+
+                  <Box>
+                    {measurements[index] && (
+                      <>
+                        <Box sx={{ marginBottom: 1 }}>
+                          {measurements[index]
+                            ? measurements[index].clientName
+                            : ""}
+                        </Box>
+                        <Button
+                          style={{ height: "100%" }}
+                          variant="contained"
+                          onClick={() => {
+                            setSelectedMeasurement(null);
+                            setTimeout(() => {
+                              setSelectedMeasurement(measurements[index]);
+                            }, 100);
+                          }}
+                        >
+                          Measurement
+                        </Button>
+                      </>
+                    )}
                   </Box>
                 </Stack>
-                <Stack direction="row" spacing={2}>
+                <Stack
+                  sx={{ margin: "10px 0" }}
+                  direction="row"
+                  spacing={2}
+                  justifyContent="space-between"
+                >
                   <Box>
                     <label>Shop</label>
-                    <TextField
-                      fullWidth
-                      id="shop"
-                      name="shop"
-                      value={values.shop}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.shop && Boolean(errors.shop)}
-                      helperText={touched.shop && errors.shop}
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
                       hiddenLabel
-                    />
+                      value={order.shop}
+                      onChange={(e) => {
+                        handleSetData("shop", e.target.value, index);
+                      }}
+                    >
+                      {BRANCHES.map((branch) => (
+                        <MenuItem value={branch.key} key={branch.key}>
+                          {branch.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </Box>
                   <Box>
-                    <label>Current Status</label>
-                    <TextField
-                      fullWidth
-                      id="status"
-                      name="status"
-                      type="status"
-                      value={values.status}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.status && Boolean(errors.status)}
-                      helperText={touched.status && errors.status}
-                    />
+                    <label>Status</label>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      hiddenLabel
+                      value={order.status}
+                      onChange={(e) => {
+                        handleSetData("status", e.target.value, index);
+                      }}
+                    >
+                      {STATUS.map((i) => (
+                        <MenuItem value={i} key={i}>
+                          {i}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </Box>
                   <Box>
                     <label>Amount</label>
@@ -119,85 +164,72 @@ export default function NewOrderPage({ handleOrdersUpload }) {
                       fullWidth
                       id="Amount"
                       name="Amount"
-                      label="Amount"
+                      hiddenLabel
                       type="Amount"
-                      value={values.Amount}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.Amount && Boolean(errors.Amount)}
-                      helperText={touched.Amount && errors.Amount}
+                      value={order.ammount}
+                      onChange={(e) => {
+                        handleSetData("ammount", e.target.value, index);
+                      }}
                     />
                   </Box>
                 </Stack>
-                <Stack direction="row" spacing={2}>
+                <Stack
+                  sx={{ margin: "10px 0" }}
+                  direction="row"
+                  spacing={2}
+                  justifyContent="space-between"
+                >
                   <Box>
-                    <label>Paid?</label>
-                    <TextField
+                    <label>Paid</label>
+                    <Checkbox
                       fullWidth
                       id="isPaid"
                       name="isPaid"
-                      value={values.isPaid}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.isPaid && Boolean(errors.isPaid)}
-                      helperText={touched.isPaid && errors.isPaid}
+                      checked={order.isPaid}
                       hiddenLabel
+                      onChange={(e) => {
+                        handleSetData("isPaid", e.target.checked, index);
+                      }}
                     />
                   </Box>
                   <Box>
-                    <label>Delivered?</label>
-                    <TextField
+                    <label>Delivered</label>
+                    <Checkbox
                       fullWidth
-                      id="isDelivered"
-                      name="isDelivered"
-                      label="isDelivered"
-                      type="isDelivered"
-                      value={values.isDelivered}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.isDelivered && Boolean(errors.isDelivered)}
-                      helperText={touched.isDelivered && errors.isDelivered}
+                      checked={order.isDelivered}
+                      hiddenLabel
+                      onChange={(e) => {
+                        handleSetData("isDelivered", e.target.checked, index);
+                      }}
                     />
                   </Box>
                   <Box>
                     <label>Delivery Date</label>
-                    {/* <input
-                      type="date"
-                      onChange={(e) => {
-                        // console.log({ abc: e.target.value.toISOString() });
-                        // const date = moment(e.target.value).toISOString();
-                        const selectedDate = e.target.value; // This is the selected date from the input
-                        const browserTime = moment(selectedDate).format(); // Convert to browser's local time
-                        console.log(browserTime);
-                        // console.log({ date });
-                        
-                      }}
-                    /> */}
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                       <DatePicker
                         onChange={(e) => {
                           const selectedDate = moment(e);
                           const newDate = selectedDate.format();
                           handleSetData("deliveryDate", newDate, index);
-                          handleSetData(
-                            "bookingDate",
-                            moment().format(),
-                            index
-                          );
                         }}
                         value={moment(order.deliveryDate)}
+                        minDate={moment(today)}
+                        sx={{ width: "100%" }}
                       />
                     </LocalizationProvider>
                   </Box>
                 </Stack>
-                <Button
-                  sx={{ background: "red" }}
-                  onClick={() => {
-                    handleRemoveOrders(index);
-                  }}
-                >
-                  Remove
-                </Button>
+                {values.orders.length > 1 && (
+                  <Button
+                    sx={{ background: "red", color: "#fff", marginBottom: 2 }}
+                    onClick={() => {
+                      handleRemoveOrders(index);
+                      handleRemoveMeasurement(index);
+                    }}
+                  >
+                    Remove
+                  </Button>
+                )}
               </Stack>
             ))}
 
@@ -205,6 +237,7 @@ export default function NewOrderPage({ handleOrdersUpload }) {
               color="primary"
               variant="contained"
               fullWidth
+              sx={{ marginBottom: 2 }}
               onClick={handleAddOrders}
             >
               Add New Order
@@ -214,9 +247,9 @@ export default function NewOrderPage({ handleOrdersUpload }) {
             </Button>
           </form>
         </Box>
-        <Box>
-          {measurements && (
-            <EditMeasurementTemplate disabled fetchData={measurements} />
+        <Box key={selectedMeasurement}>
+          {selectedMeasurement && (
+            <EditMeasurementTemplate disabled fetchData={selectedMeasurement} />
           )}
         </Box>
       </Stack>

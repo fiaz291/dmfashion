@@ -100,6 +100,96 @@ const fetchMeasurementsWithPhoneNumber = async (phoneNumber) => {
   }
 };
 
+const fetchUserObjectWithPhoneNumber = async (phoneNumber) => {
+  try {
+    const querySnapshot = await firestore
+      .collection("Users")
+      .where("contacts", "array-contains", {
+        phoneNumber: phoneNumber,
+      })
+      .get();
+    const booksArray = []; // Initialize an empty array to store books
+    querySnapshot.forEach((doc) => {
+      const bookData = doc.data();
+      booksArray.push(bookData); // Push each book data to the array
+    });
+
+    return booksArray[0]; // Returning the array of books
+  } catch (err) {
+    console.error("Error:", err); // Handling errors
+  }
+};
+
+function IncrementGroupId(input) {
+  // Extract the numeric part using regular expression
+  const match = input.match(/(\D*)(\d+)/);
+  if (!match) return input; // If no numeric part found, return input as is
+
+  const prefix = match[1]; // Get the non-numeric prefix
+  let number = parseInt(match[2]); // Get the numeric part and parse it as integer
+  number++; // Increment the number
+
+  // Concatenate the prefix and the incremented number
+  return prefix + number;
+}
+
+function IncrementOrderId(input) {
+  // Extract the last numeric part using regular expression
+  const match = input.match(/(\D*)(\d+)$/);
+  if (!match) return input; // If no numeric part found, return input as is
+
+  const prefix = match[1]; // Get the non-numeric prefix
+  let number = parseInt(match[2]); // Get the numeric part and parse it as integer
+  number++; // Increment the number
+
+  // Concatenate the prefix and the incremented number
+  return prefix + number;
+}
+
+async function addNewOrder(collection, data) {
+  console.log({ data });
+  const id = data.id;
+  try {
+    await firestore.collection(collection).doc(id).set(data);
+  } catch (err) {
+    return { error: err };
+  }
+}
+
+async function addNewOrderArray(array) {
+  try {
+    const promises = [];
+    array.forEach((arr) => {
+      console.log({ arr });
+      promises.push(addNewOrder("Orders", arr));
+    });
+    console.log({ promises });
+    const res = Promise.all(promises);
+    return res;
+  } catch (err) {
+    return err;
+  }
+}
+
+async function addOrdersInUser() {}
+
+async function placeOrder(ordersArray, user, shopName, orderGroupId) {
+  try {
+    await addNewOrderArray(ordersArray);
+
+    const groupIdRef = await firestore.collection("OrderCounts").doc(shopName);
+    if (groupIdRef) {
+      await groupIdRef.update({ currentOrder: orderGroupId });
+    }
+    const userDocRef = await firestore.collection("Users").doc(user.id);
+    if (userDocRef) {
+      await userDocRef.update({ orders: user.orders });
+    }
+  } catch (err) {
+    return { error: err };
+  }
+}
+
 export {
   editData,
   writeData,
@@ -107,4 +197,8 @@ export {
   getAllCollectionArray,
   fetchUserWithPhoneNumber,
   fetchMeasurementsWithPhoneNumber,
+  fetchUserObjectWithPhoneNumber,
+  IncrementGroupId,
+  IncrementOrderId,
+  placeOrder,
 };
