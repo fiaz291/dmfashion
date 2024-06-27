@@ -817,11 +817,7 @@ export default function AddNewMeasurementTemplate({}) {
                       </label>
                       <div className="col align-center">
                         <Field
-                          onChange={() => {
-                            if (isError) {
-                              setIsError(false);
-                            }
-                          }}
+                         
                           id="shalwarWaist"
                           name="shalwarWaist"
                           placeholder="Hip size"
@@ -837,11 +833,7 @@ export default function AddNewMeasurementTemplate({}) {
                       </label>
                       <div className="col align-center">
                         <Field
-                          onChange={() => {
-                            if (isError) {
-                              setIsError(false);
-                            }
-                          }}
+                         
                           id="pocketDetails"
                           name="pocketDetails"
                           placeholder="Cross Pocket"
