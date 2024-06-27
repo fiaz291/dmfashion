@@ -15,6 +15,7 @@ const initialValues = {
   name: "",
   length: "",
   shoulder: "",
+  armMuscle: "",
   armsLength: "",
   gala: "",
   chest1: "",
@@ -283,6 +284,19 @@ export default function AddNewMeasurementTemplate({}) {
                         placeholder="hip2"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label htmlFor="armMuscle" className="urdu">
+                    موڈھا
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        id="armMuscle"
+                        name="armMuscle"
+                        placeholder="armMuscle"
+                        className="formik-input"
                       />
                     </div>
                   </div>

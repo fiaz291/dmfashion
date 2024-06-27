@@ -86,6 +86,7 @@ export default function EditMeasurementTemplate({
       panchaSize: measurement?.panchaSize || "",
       asin: measurement?.asin || "",
       pocketDetails: measurement?.pocketDetails || "",
+      armMuscle: measurement?.armMuscle || "",
     };
   }, [measurement]);
 
@@ -307,6 +308,19 @@ export default function EditMeasurementTemplate({
                         placeholder="hip2"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label htmlFor="armMuscle" className="urdu">
+                    موڈھا
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        id="armMuscle"
+                        name="armMuscle"
+                        placeholder="armMuscle"
+                        className="formik-input"
                       />
                     </div>
                   </div>
