@@ -10,6 +10,7 @@ import {
 import { toast } from "react-toastify";
 
 const initialValues = {
+  ShopName: "dm",
   phoneNumber: "",
   clientName: "",
   name: "",
@@ -53,6 +54,7 @@ const initialValues = {
 export default function AddNewMeasurementTemplate({}) {
   const [noUserFound, setNoUserFound] = useState(false);
   const [measurementId, setMeasurementId] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   async function handleUserUpload(data) {
     let res;
@@ -79,6 +81,15 @@ export default function AddNewMeasurementTemplate({}) {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values, { resetForm }) => {
+            if (
+              values.phoneNumber === "" ||
+              values.clientName === "" ||
+              values.name === ""
+            ) {
+              setIsError(true);
+              toast.error("Add Fields");
+              return;
+            }
             const res = await handleUserUpload(values);
             if (!res?.error) {
               toast("Measurement Added");
@@ -100,6 +111,44 @@ export default function AddNewMeasurementTemplate({}) {
                   style={{ textAlign: "center", fontSize: 24, lineHeight: 0 }}
                 >
                   ----------
+                </div>
+
+                <div
+                  className="row justify-center"
+                  style={{ marginTop: 20, gap: 20 }}
+                >
+                  <div className="col">
+                    <label htmlFor="ShopName" className="urdu">
+                      DM Fashion
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        style={{ width: 30 }}
+                        type="radio"
+                        id="ShopName"
+                        name="ShopName"
+                        placeholder="ShopName"
+                        className="formik-input"
+                        value="dm"
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label htmlFor="ShopName" className="urdu">
+                      Tailors
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        style={{ width: 30 }}
+                        type="radio"
+                        id="ShopName"
+                        name="ShopName"
+                        placeholder="ShopName"
+                        className="formik-input"
+                        value="tailors"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="row justify-between">
                   <div className="col">
@@ -229,13 +278,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="chest1"
                         name="chest1"
-                        placeholder="Chest 1"
+                        placeholder="Chest"
                         className="formik-input"
                       />
                       <Field
                         id="chest2"
                         name="chest2"
-                        placeholder="Chest 2"
+                        placeholder="Chest Half"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -249,13 +298,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="waist1"
                         name="waist1"
-                        placeholder="Waist 1"
+                        placeholder="Waist"
                         className="formik-input"
                       />
                       <Field
                         id="waist2"
                         name="waist2"
-                        placeholder="Waist 2"
+                        placeholder="Waist Half"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -275,13 +324,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="hip1"
                         name="hip1"
-                        placeholder="Hip 1"
+                        placeholder="Hip"
                         className="formik-input"
                       />
                       <Field
                         id="hip2"
                         name="hip2"
-                        placeholder="Hip 2"
+                        placeholder="Hip Half"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -289,7 +338,7 @@ export default function AddNewMeasurementTemplate({}) {
                   </div>
                   <div className="col">
                     <label htmlFor="armMuscle" className="urdu">
-                    موڈھا
+                      موڈھا
                     </label>
                     <div className="col align-center">
                       <Field
@@ -429,7 +478,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="kafNumber"
                         name="kafNumber"
-                        placeholder="Kaf"
+                        placeholder="Num"
                         className="formik-input"
                         style={{ width: 50 }}
                       />
@@ -457,7 +506,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="kafLength"
                         name="kafLength"
-                        placeholder="kaf Length"
+                        placeholder="Lng"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -518,7 +567,7 @@ export default function AddNewMeasurementTemplate({}) {
                 >
                   <div className="col">
                     <label htmlFor="pocketNumber" className="urdu">
-                      پاکٹ نمبر
+                      فرنٹ پاکٹ نمبر
                     </label>
                     <div className="col align-center">
                       <Field
@@ -530,6 +579,35 @@ export default function AddNewMeasurementTemplate({}) {
                       />
                     </div>
                   </div>
+                  <div className="col">
+                    <label htmlFor="frontPocket" className="urdu">
+                      فرنٹ پاکٹ
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        id="frontPocket"
+                        name="frontPocket"
+                        placeholder="Front Pocket"
+                        style={{ width: 50 }}
+                        className="formik-input"
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label htmlFor="sidePocket" className="urdu">
+                      سائیڈ پاکٹ
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        id="sidePocket"
+                        name="sidePocket"
+                        placeholder="Side Pocket"
+                        style={{ width: 50 }}
+                        className="formik-input"
+                      />
+                    </div>
+                  </div>
+
                   <div className="col">
                     <label htmlFor="pattiLength" className="urdu">
                       پٹی لمبائی
@@ -558,34 +636,7 @@ export default function AddNewMeasurementTemplate({}) {
                       />
                     </div>
                   </div>
-                  <div className="col">
-                    <label htmlFor="sidePocket" className="urdu">
-                      سائیڈ پاکٹ
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="sidePocket"
-                        name="sidePocket"
-                        placeholder="Side Pocket"
-                        style={{ width: 50 }}
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <label htmlFor="frontPocket" className="urdu">
-                      فرنٹ پاکٹ
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="frontPocket"
-                        name="frontPocket"
-                        placeholder="Front Pocket"
-                        style={{ width: 50 }}
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
+
                   <div className="col">
                     <label htmlFor="colar" className="urdu">
                       کالر
@@ -672,51 +723,6 @@ export default function AddNewMeasurementTemplate({}) {
                   style={{ flexDirection: "row-reverse" }}
                 >
                   <div className="col">
-                    <label htmlFor="shalwarGhera" className="urdu">
-                      گھیرا
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="shalwarGhera"
-                        name="shalwarGhera"
-                        placeholder="Shalwar Ghera"
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <label htmlFor="zipPocket" className="urdu">
-                      زپ پاکٹ
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="zipPocket"
-                        name="zipPocket"
-                        placeholder="Zip Pocket"
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <label htmlFor="shalwarWaist" className="urdu">
-                      کمر
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="shalwarWaist"
-                        name="shalwarWaist"
-                        placeholder="Shalwar Waist"
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  className="row justify-between"
-                  style={{ flexDirection: "row-reverse" }}
-                >
-                  <div className="col">
                     <label htmlFor="shalwarLength" className="urdu">
                       لمبائی
                     </label>
@@ -724,20 +730,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="shalwarLength"
                         name="shalwarLength"
-                        placeholder="Shalwar Length"
-                        className="formik-input"
-                      />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <label htmlFor="panchaNumber" className="urdu">
-                      پانچا نمبر
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="panchaNumber"
-                        name="panchaNumber"
-                        placeholder="Pancha Number"
+                        placeholder="Length"
                         className="formik-input"
                       />
                     </div>
@@ -755,13 +748,24 @@ export default function AddNewMeasurementTemplate({}) {
                       />
                     </div>
                   </div>
+                  <div className="col">
+                    <label htmlFor="shalwarGhera" className="urdu">
+                      گھیرا
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        id="shalwarGhera"
+                        name="shalwarGhera"
+                        placeholder="Ghera"
+                        className="formik-input"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div
                   className="row justify-between"
-                  style={{
-                    flexDirection: "row-reverse",
-                  }}
+                  style={{ flexDirection: "row-reverse" }}
                 >
                   <div className="col">
                     <label htmlFor="asin" className="urdu">
@@ -776,19 +780,76 @@ export default function AddNewMeasurementTemplate({}) {
                       />
                     </div>
                   </div>
-                  <div className="col">
-                    <label htmlFor="pocketDetails" className="urdu">
-                      پاکٹ لگائیں
-                    </label>
-                    <div className="col align-center">
-                      <Field
-                        id="pocketDetails"
-                        name="pocketDetails"
-                        placeholder="Pocket Details"
-                        className="formik-input"
-                      />
+                  {values.shalwarType !== "ٹراوزر" && (
+                    <>
+                      <div className="col">
+                        <label htmlFor="zipPocket" className="urdu">
+                          زپ پاکٹ
+                        </label>
+                        <div className="col align-center">
+                          <Field
+                            id="zipPocket"
+                            name="zipPocket"
+                            placeholder="Zip Pocket"
+                            className="formik-input"
+                          />
+                        </div>
+                      </div>
+                      <div className="col">
+                        <label htmlFor="panchaNumber" className="urdu">
+                          پانچا نمبر
+                        </label>
+                        <div className="col align-center">
+                          <Field
+                            id="panchaNumber"
+                            name="panchaNumber"
+                            placeholder="Pancha Number"
+                            className="formik-input"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {values.shalwarType === "ٹراوزر" && (
+                    <div className="col">
+                      <label htmlFor="shalwarWaist" className="urdu">
+                        ہپ
+                      </label>
+                      <div className="col align-center">
+                        <Field
+                          onChange={() => {
+                            if (isError) {
+                              setIsError(false);
+                            }
+                          }}
+                          id="shalwarWaist"
+                          name="shalwarWaist"
+                          placeholder="Hip size"
+                          className="formik-input"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {values.shalwarType === "ٹراوزر" && (
+                    <div className="col">
+                      <label htmlFor="pocketDetails" className="urdu">
+                        کراس پاکٹ
+                      </label>
+                      <div className="col align-center">
+                        <Field
+                          onChange={() => {
+                            if (isError) {
+                              setIsError(false);
+                            }
+                          }}
+                          id="pocketDetails"
+                          name="pocketDetails"
+                          placeholder="Cross Pocket"
+                          className="formik-input"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="row justify-between w100">

@@ -49,6 +49,7 @@ export default function EditMeasurementTemplate({
 
   const getInitialValues = useCallback(() => {
     return {
+      ShopName: measurement?.ShopName || "",
       phoneNumber: measurement?.phoneNumber || "",
       clientName: measurement?.clientName || "",
       name: measurement?.name || "",
@@ -122,6 +123,38 @@ export default function EditMeasurementTemplate({
                   style={{ textAlign: "center", fontSize: 24, lineHeight: 0 }}
                 >
                   ----------
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <label htmlFor="ShopName" className="urdu">
+                      DM Fashion
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        style={{ width: 30 }}
+                        type="radio"
+                        id="ShopName"
+                        name="ShopName"
+                        placeholder="ShopName"
+                        className="formik-input"
+                      />
+                    </div>
+                  </div>
+                  <div className="col">
+                    <label htmlFor="ShopName" className="urdu">
+                     Tailors
+                    </label>
+                    <div className="col align-center">
+                      <Field
+                        style={{ width: 30 }}
+                        type="radio"
+                        id="ShopName"
+                        name="ShopName"
+                        placeholder="ShopName"
+                        className="formik-input"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="row justify-between">
                   <div className="col">
@@ -313,7 +346,7 @@ export default function EditMeasurementTemplate({
                   </div>
                   <div className="col">
                     <label htmlFor="armMuscle" className="urdu">
-                    موڈھا
+                      موڈھا
                     </label>
                     <div className="col align-center">
                       <Field
