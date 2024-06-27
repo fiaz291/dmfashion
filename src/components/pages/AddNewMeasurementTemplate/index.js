@@ -109,7 +109,7 @@ export default function AddNewMeasurementTemplate({}) {
                     <Field
                       id="phoneNumber"
                       name="phoneNumber"
-                      placeholder="Name"
+                      placeholder="Client Phone Number"
                       className="formik-input"
                       onBlur={async (e) => {
                         const res = await fetchMeasurementsWithPhoneNumber(
@@ -155,12 +155,12 @@ export default function AddNewMeasurementTemplate({}) {
                   </div>
                   <div className="col">
                     <label htmlFor="name" className="urdu">
-                      ناپ کا نام
+                      ناپ کا نمبر
                     </label>
                     <Field
                       id="name"
                       name="name"
-                      placeholder="Name"
+                      placeholder="Naap Number"
                       className="formik-input"
                     />
                   </div>
@@ -199,7 +199,7 @@ export default function AddNewMeasurementTemplate({}) {
                     <Field
                       id="armsLength"
                       name="armsLength"
-                      placeholder="armsLength"
+                      placeholder="Arms Length"
                       className="formik-input"
                     />
                   </div>
@@ -216,7 +216,7 @@ export default function AddNewMeasurementTemplate({}) {
                     <Field
                       id="gala"
                       name="gala"
-                      placeholder="gala"
+                      placeholder="Gala"
                       className="formik-input"
                     />
                   </div>
@@ -229,13 +229,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="chest1"
                         name="chest1"
-                        placeholder="chest1"
+                        placeholder="Chest 1"
                         className="formik-input"
                       />
                       <Field
                         id="chest2"
                         name="chest2"
-                        placeholder="chest2"
+                        placeholder="Chest 2"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -249,13 +249,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="waist1"
                         name="waist1"
-                        placeholder="waist1"
+                        placeholder="Waist 1"
                         className="formik-input"
                       />
                       <Field
                         id="waist2"
                         name="waist2"
-                        placeholder="waist2"
+                        placeholder="Waist 2"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -275,13 +275,13 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="hip1"
                         name="hip1"
-                        placeholder="hip1"
+                        placeholder="Hip 1"
                         className="formik-input"
                       />
                       <Field
                         id="hip2"
                         name="hip2"
-                        placeholder="hip2"
+                        placeholder="Hip 2"
                         className="formik-input"
                         style={{ width: "50%", marginTop: 0 }}
                       />
@@ -295,7 +295,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="armMuscle"
                         name="armMuscle"
-                        placeholder="armMuscle"
+                        placeholder="Arm Muscle"
                         className="formik-input"
                       />
                     </div>
@@ -429,7 +429,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="kafNumber"
                         name="kafNumber"
-                        placeholder="kafNumber"
+                        placeholder="Kaf"
                         className="formik-input"
                         style={{ width: 50 }}
                       />
@@ -443,7 +443,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="kafWidth"
                         name="kafWidth"
-                        placeholder="kafWidth"
+                        placeholder="width"
                         className="formik-input"
                         style={{ width: 50 }}
                       />
@@ -457,7 +457,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="kafLength"
                         name="kafLength"
-                        placeholder="kafLength"
+                        placeholder="kaf Length"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -524,7 +524,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="pocketNumber"
                         name="pocketNumber"
-                        placeholder="pocketNumber"
+                        placeholder="Pocket Number"
                         className="formik-input"
                         style={{ width: 100 }}
                       />
@@ -538,7 +538,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="pattiLength"
                         name="pattiLength"
-                        placeholder="pattiLength"
+                        placeholder="Patti Length"
                         className="formik-input"
                         style={{ width: 50 }}
                       />
@@ -552,7 +552,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="pattingWidth"
                         name="pattingWidth"
-                        placeholder="pattingWidth"
+                        placeholder="Patti Width"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -566,7 +566,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="sidePocket"
                         name="sidePocket"
-                        placeholder="sidePocket"
+                        placeholder="Side Pocket"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -580,7 +580,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="frontPocket"
                         name="frontPocket"
-                        placeholder="frontPocket"
+                        placeholder="Front Pocket"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -594,7 +594,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="colar"
                         name="colar"
-                        placeholder="colar"
+                        placeholder="Colar"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -608,7 +608,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="ben"
                         name="ben"
-                        placeholder="ben"
+                        placeholder="Ben"
                         style={{ width: 50 }}
                         className="formik-input"
                       />
@@ -679,7 +679,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="shalwarGhera"
                         name="shalwarGhera"
-                        placeholder="shalwarGhera"
+                        placeholder="Shalwar Ghera"
                         className="formik-input"
                       />
                     </div>
@@ -692,7 +692,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="zipPocket"
                         name="zipPocket"
-                        placeholder="zipPocket"
+                        placeholder="Zip Pocket"
                         className="formik-input"
                       />
                     </div>
@@ -705,7 +705,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="shalwarWaist"
                         name="shalwarWaist"
-                        placeholder="shalwarWaist"
+                        placeholder="Shalwar Waist"
                         className="formik-input"
                       />
                     </div>
@@ -724,7 +724,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="shalwarLength"
                         name="shalwarLength"
-                        placeholder="shalwarLength"
+                        placeholder="Shalwar Length"
                         className="formik-input"
                       />
                     </div>
@@ -737,7 +737,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="panchaNumber"
                         name="panchaNumber"
-                        placeholder="panchaNumber"
+                        placeholder="Pancha Number"
                         className="formik-input"
                       />
                     </div>
@@ -750,7 +750,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="panchaSize"
                         name="panchaSize"
-                        placeholder="panchaSize"
+                        placeholder="Pancha Size"
                         className="formik-input"
                       />
                     </div>
@@ -771,7 +771,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="asin"
                         name="asin"
-                        placeholder="asin"
+                        placeholder="Asin"
                         className="formik-input"
                       />
                     </div>
@@ -784,7 +784,7 @@ export default function AddNewMeasurementTemplate({}) {
                       <Field
                         id="pocketDetails"
                         name="pocketDetails"
-                        placeholder="pocketDetails"
+                        placeholder="Pocket Details"
                         className="formik-input"
                       />
                     </div>
