@@ -27,7 +27,10 @@ body {
   overflow-x: hidden;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
 }
-
+input {
+  background: white;
+  color: black;
+}
 .flex {
   display: flex;
 }
